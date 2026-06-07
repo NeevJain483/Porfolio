@@ -1,0 +1,44 @@
+name: Deploy React App to AWS EC2
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Pull the source code
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js setup environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # Step 3: Clean installation of packages
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 4: Compile React static build artifacts
+      - name: Build Production Bundle
+        run: npm run build
+        env:
+          # Inject production environment API URLs safely here
+          VITE_API_URL: ${{ secrets.PRODUCTION_API_URL }}
+
+      # Step 5: Transfer assets securely via AppleBoy SSH/SCP Action
+      - name: Deploy Assets to EC2 over SSH/SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "dist/*"        # Use "build/*" if using Create React App instead of Vite
+          target: "/var/www/react-app"
+          strip_components: 1     # Strips the outer 'dist' folder name so files land flat inside /react-app
