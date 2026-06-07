@@ -36,5 +36,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "dist/*"        # Use "build/*" if using Create React App instead of Vite
-          target: "/portfolio"
+          target: "/home/ubuntu/portfolio"
           strip_components: 1
