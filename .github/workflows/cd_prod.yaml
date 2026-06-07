@@ -1,4 +1,4 @@
-name: Deploy React App to AWS EC2
+name: Deploy React App to AWS EC2 (No Docker)
 
 on:
   push:
@@ -8,37 +8,30 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    
+    # 1. Add this line if your React app is inside a subfolder (e.g., apps/web or portfolio_v2)
+    defaults:
+      run:
+        working-directory: ./
     steps:
-      # Step 1: Pull the source code
-      - name: Checkout Source Code
-        uses: actions/checkout@v4
-
-      # Step 2: Install Node.js setup environment
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
+          # 2. If using a subfolder, add the cache dependency path here:
+          cache-dependency-path: './package-lock.json'
 
-      # Step 3: Clean installation of packages
-      - name: Install Dependencies
-        run: npm ci
-
-      # Step 4: Compile React static build artifacts
-      - name: Build Production Bundle
-        run: npm run build
-        env:
-          # Inject production environment API URLs safely here
-          VITE_API_URL: ${{ secrets.PRODUCTION_API_URL }}
-
-      # Step 5: Transfer assets securely via AppleBoy SSH/SCP Action
+      - run: npm ci
+      - run: npm run build
+      
       - name: Deploy Assets to EC2 over SSH/SCP
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "dist/*"        # Use "build/*" if using Create React App instead of Vite
-          target: "/var/www/react-app"
-          strip_components: 1     # Strips the outer 'dist' folder name so files land flat inside /react-app
+          # 3. Update source folder to point to your subfolder build
+          source: "dist/*" 
+          target: "/portfolio"
+          strip_components: 1
