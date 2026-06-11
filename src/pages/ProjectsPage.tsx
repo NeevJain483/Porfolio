@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import canvasHero from "@assets/canvas-hero.png"
 
 const ProjectsPage = () => {
   return (
-    <main className="min-h-[calc(100vh-86px)] pt-24 pb-32 max-w-[1200px] mx-auto px-6 md:px-16">
+    <main className="min-h-[calc(100vh-86px)] pt-24 pb-32 max-w-max-width mx-auto px-6 md:px-16">
       <section className="mb-12">
         <div className="bg-[#101010] p-6 rounded-lg border border-outline-variant/20 shadow-xl overflow-hidden relative">
           <div className="flex gap-1.5 mb-4">
@@ -22,10 +23,10 @@ const ProjectsPage = () => {
             <div className="relative aspect-video overflow-hidden">
               <img
                 alt="Sketch_Engine"
-                className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                src="https://lh3.googleusercontent.com/aida/AP1WRLtJql8fD1DAxHHOZGzzlLCP4RmB_0N9bZL1XOSIkIIgXc6IykDDmTMO0c7VWO0fJTTjaKqRMUqOKMCgSWx8gIaP1XyE9-YHJNEIbk5knxctm6KnJz6EfrjEsgayLJ_KO2ElTDoaaJIZgEOGIryDLEaBLUjtzLdBmufSudIJ-4s_SygSKPAU2rL6CLkornadWiMf1wqwxIKiawsyO1wK0XJH0858yHkHBP52bwlCs3e1fzJSql-fGsx4aA"
+                className="w-full h-full object-cover grayscale-20 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                src={canvasHero}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
               <div className="absolute bottom-4 left-4 flex gap-2">
                 <span className="bg-accent-emerald/90 text-white font-mono text-[10px] px-3 py-1 rounded-full">
                   FEATURED
